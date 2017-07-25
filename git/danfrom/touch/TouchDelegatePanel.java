@@ -26,7 +26,7 @@ public class TouchDelegatePanel extends javax.swing.JPanel implements TouchDelag
   }
 
   @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+  // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
   private void initComponents() {
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -39,20 +39,26 @@ public class TouchDelegatePanel extends javax.swing.JPanel implements TouchDelag
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGap(0, 300, Short.MAX_VALUE)
     );
-  }// </editor-fold>//GEN-END:initComponents
+  }// </editor-fold>                        
 
   @Override
   public void touchAdded(int device, int touch_id, Point2D location) {
-    TouchEvent te = new TouchEvent(device, touch_id, location);
     Point here = getLocationOnScreen();
     Point2D inHere = new Point2D.Double(location.getX() - here.x, location.getY() - here.y);
     Point p = new Point((int)inHere.getX(), (int)inHere.getY());
     try {
       Component c = getComponentAt(p);
+      JComponent jc = (JComponent) c;
       if (c instanceof Touchable) {
         Touchable t = (Touchable) c;
         componentForTouchStart.put(touch_id, (JComponent)t);
         if (t.hasTouchListenersAttached()) {
+          // Convert from global to locale
+          Point cloc = jc.getLocationOnScreen();
+          Point2D cin = new Point2D.Double(location.getX() - cloc.x, location.getY() - cloc.y);
+          TouchEvent te = new TouchEvent(device, touch_id, cin, location);
+          
+          // Iterate touch listeners
           ArrayList<TouchListener> listeners = t.getTouchListeners();
           Iterator<TouchListener> i = listeners.iterator();
           while (i.hasNext()) {
@@ -68,16 +74,22 @@ public class TouchDelegatePanel extends javax.swing.JPanel implements TouchDelag
 
   @Override
   public void touchUpdated(int device, int touch_id, Point2D location) {
-    TouchEvent te = new TouchEvent(device, touch_id, location);
     Point here = getLocationOnScreen();
     Point2D inHere = new Point2D.Double(location.getX() - here.x, location.getY() - here.y);
     Point p = new Point((int)inHere.getX(), (int)inHere.getY());
     //System.out.println(p);
     try {
       Component c = getComponentAt(p);
+      JComponent jc = (JComponent) c;
       if (c instanceof Touchable) {
         Touchable t = (Touchable) c;
         if (t.hasTouchListenersAttached()) {
+          // Convert from global to locale
+          Point cloc = jc.getLocationOnScreen();
+          Point2D cin = new Point2D.Double(location.getX() - cloc.x, location.getY() - cloc.y);
+          TouchEvent te = new TouchEvent(device, touch_id, cin, location);
+          
+          // Iterate touch listeners
           ArrayList<TouchListener> listeners = t.getTouchListeners();
           Iterator<TouchListener> i = listeners.iterator();
           while (i.hasNext()) {
@@ -93,15 +105,21 @@ public class TouchDelegatePanel extends javax.swing.JPanel implements TouchDelag
 
   @Override
   public void touchRemoved(int device, int touch_id, Point2D location) {
-    TouchEvent te = new TouchEvent(device, touch_id, location);
     Point here = getLocationOnScreen();
     Point2D inHere = new Point2D.Double(location.getX() - here.x, location.getY() - here.y);
     Point p = new Point((int)inHere.getX(), (int)inHere.getY());
     try {
       Component c = getComponentAt(p);
+      JComponent jc = (JComponent) c;
       if (c instanceof Touchable) {
         Touchable t = (Touchable) c;
         if (t.hasTouchListenersAttached()) {
+          // Convert from global to locale
+          Point cloc = jc.getLocationOnScreen();
+          Point2D cin = new Point2D.Double(location.getX() - cloc.x, location.getY() - cloc.y);
+          TouchEvent te = new TouchEvent(device, touch_id, cin, location);
+          
+          // Iterate touch listeners
           ArrayList<TouchListener> listeners = t.getTouchListeners();
           Iterator<TouchListener> i = listeners.iterator();
           while (i.hasNext()) {
@@ -120,6 +138,6 @@ public class TouchDelegatePanel extends javax.swing.JPanel implements TouchDelag
   }
 
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  // End of variables declaration//GEN-END:variables
+  // Variables declaration - do not modify                     
+  // End of variables declaration                   
 }
